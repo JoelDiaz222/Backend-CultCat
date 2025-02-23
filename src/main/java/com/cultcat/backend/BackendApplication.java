@@ -8,7 +8,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class BackendApplication {
 
 	public static void main(String[] args) {
-		System.setProperty("DB_URL", Dotenv.load().get("DB_URL"));
+		final Dotenv dotenv = Dotenv.load();
+
+		System.setProperty("DB_URL", dotenv.get("DB_URL"));
+		System.setProperty("CLIENT_ID", dotenv.get("CLIENT_ID"));
+		System.setProperty("CLIENT_SECRET", dotenv.get("CLIENT_SECRET"));
+
 		SpringApplication.run(BackendApplication.class, args);
 	}
 

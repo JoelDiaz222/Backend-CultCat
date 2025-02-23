@@ -9,9 +9,6 @@ import java.util.List;
 @Entity
 @Table(name = "event")
 public class Event implements Serializable {
-
-    public Event() {}
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "codi", nullable = false)
@@ -106,6 +103,11 @@ public class Event implements Serializable {
 
     @Column(name = "amagar_dates")
     private String amagarDates;
+
+    @Column(name = "id_creador", nullable = true)
+    private Long idCreador;
+
+    public Event() {}
 
     public Long getCodi() {
         return codi;
@@ -353,5 +355,13 @@ public class Event implements Serializable {
 
     public void setAmagarDates(String amagarDates) {
         this.amagarDates = amagarDates;
+    }
+
+    public void setIdCreador(Long idCreador) {
+        this.idCreador = idCreador;
+    }
+
+    public Long getIdCreador() {
+        return idCreador;
     }
 }

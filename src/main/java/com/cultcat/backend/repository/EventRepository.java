@@ -26,5 +26,5 @@ public interface EventRepository extends JpaRepository<Event, Long> {
             @Param("from") LocalDate from,
             @Param("to") LocalDate to);
 
-    Optional<Event> findByCodi(long codi);
+    Optional<Event> findByIdCreador(Long idCreador);
 }

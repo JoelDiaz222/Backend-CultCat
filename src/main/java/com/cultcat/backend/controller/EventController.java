@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 @RestController
 @RequestMapping("/api/events")
 public class EventController {
-
     @Autowired
     private EventService eventService;
 
