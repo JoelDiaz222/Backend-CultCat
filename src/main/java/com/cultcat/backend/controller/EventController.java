@@ -17,9 +17,9 @@ public class EventController {
     @Autowired
     private EventService eventService;
 
-    @GetMapping("/{codi}")
-    public Optional<Event> getEventByCodi(@PathVariable long codi) {
-        return eventService.getEventByCodi(codi);
+    @GetMapping("/{id}")
+    public Optional<Event> getEventById(@PathVariable long id) {
+        return eventService.getEventById(id);
     }
 
     @GetMapping("/search")

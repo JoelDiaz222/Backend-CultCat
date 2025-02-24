@@ -16,8 +16,8 @@ public class EventService {
     @Autowired
     private EventRepository eventRepository;
 
-    public Optional<Event> getEventByCodi(long codi) {
-        return eventRepository.findById(codi);
+    public Optional<Event> getEventById(long id) {
+        return eventRepository.findById(id);
     }
 
     public List<EventDTO> getEventsWithinRadiusAndDate(

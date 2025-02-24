@@ -11,8 +11,8 @@ import java.util.List;
 public class Event implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "codi", nullable = false)
-    private Long codi;
+    @Column(name = "id", nullable = false)
+    private Long id;
 
     @Column(name = "data_fi", nullable = false)
     private LocalDate dataFi;
@@ -109,12 +109,12 @@ public class Event implements Serializable {
 
     public Event() {}
 
-    public Long getCodi() {
-        return codi;
+    public Long getId() {
+        return id;
     }
 
-    public void setCodi(Long codi) {
-        this.codi = codi;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public LocalDate getDataFi() {

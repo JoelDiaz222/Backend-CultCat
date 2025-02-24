@@ -13,8 +13,8 @@ import java.util.Optional;
 public interface EventRepository extends JpaRepository<Event, Long> {
 
     @Query(value = """
-        SELECT e.codi, e.denominacio, e.descripcio, e.adreça, e.data_inici, e.data_fi
-        FROM events e
+        SELECT e.id, e.denominacio, e.descripcio, e.adreça, e.data_inici, e.data_fi
+        FROM event e
         WHERE ST_DWithin(e.localitzacio, ST_SetSRID(ST_MakePoint(:longitude, :latitude), 4326), :radius)
         AND (CAST(:from AS DATE) IS NULL OR e.data_inici >= CAST(:from AS DATE))
         AND (CAST(:to AS DATE) IS NULL OR e.data_fi <= CAST(:to AS DATE))
@@ -26,5 +26,5 @@ public interface EventRepository extends JpaRepository<Event, Long> {
             @Param("from") LocalDate from,
             @Param("to") LocalDate to);
 
-    Optional<Event> findByIdCreador(Long idCreador);
+    List<Event> findByIdCreador(Long idCreador);
 }

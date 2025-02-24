@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.sql.Date;
 
 public record EventDTO(
-        Long codi,
+        Long id,
         String denominacio,
         String descripcio,
         String adreça,
