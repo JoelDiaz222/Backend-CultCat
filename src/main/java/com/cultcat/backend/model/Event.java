@@ -1,110 +1,109 @@
 package com.cultcat.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+import java.util.Random;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "event")
 public class Event implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(nullable = false)
+    @JsonProperty("codi")
     private Long id;
 
-    @Column(name = "data_fi", nullable = false)
+    @Column(nullable = false)
+    @JsonProperty("data_fi")
     private LocalDate dataFi;
 
-    @Column(name = "data_inici", nullable = false)
+    @Column(nullable = false)
+    @JsonProperty("data_inici")
     private LocalDate dataInici;
 
-    @Column(name = "data_fi_aproximada")
+    @JsonProperty("data_fi_aproximada")
     private String dataFiAproximada;
 
-    @Column(name = "denominacio")
+    @JsonProperty("denominaci")
     private String denominacio;
 
-    @Column(name = "descripcio")
     private String descripcio;
 
-    @Column(name = "entrades")
     private String entrades;
 
-    @Column(name = "horari")
     private String horari;
 
-    @Column(name = "subtitol")
+    @JsonProperty("subt_tol")
     private String subtitol;
 
-    @Column(name = "tags_ambits", columnDefinition = "text[]")
+    @Column(columnDefinition = "text[]")
     private List<String> tagsAmbits;
 
-    @Column(name = "tags_categories", columnDefinition = "text[]")
+    @Column(columnDefinition = "text[]")
     private List<String> tagsCategories;
 
-    @Column(name = "tags_altres_categories", columnDefinition = "text[]")
+    @Column(columnDefinition = "text[]")
     private List<String> tagsAltresCategories;
 
-    @Column(name = "links")
     private String links;
 
-    @Column(name = "documents")
     private String documents;
 
-    @Column(name = "imatges")
     private String imatges;
 
-    @Column(name = "videos")
     private String videos;
 
-    @Column(name = "adreça")
+    @JsonProperty("adre_a")
     private String adreça;
 
-    @Column(name = "codi_postal")
+    @JsonProperty("codi_postal")
     private Integer codiPostal;
 
     @Column(name = "comarca_i_municipi")
+    @JsonProperty("comarca_i_municipi")
     private String comarcaIMunicipi;
 
-    @Column(name = "email")
     private String email;
 
-    @Column(name = "espai")
     private String espai;
 
-    @Column(name = "localitat")
+    private Float latitud;
+
     private String localitat;
 
+    private Float longitud;
+
     @Column(name = "regio_o_pais")
+    @JsonProperty("regio_o_pais")
     private String regioOPais;
 
-    @Column(name = "telefon")
+    @JsonProperty("tel_fon")
     private String telefon;
 
-    @Column(name = "url")
     private String url;
 
-    @Column(name = "img_app")
+    @JsonProperty("imgapp")
     private String imgApp;
 
-    @Column(name = "descripcio_html")
+    @JsonProperty("descripcio_html")
     private String descripcioHtml;
 
-    @Column(name = "georeferencia")
     private String georeferencia;
 
-    @Column(name = "municipi")
     private String municipi;
 
-    @Column(name = "comarca")
     private String comarca;
 
-    @Column(name = "amagar_dates")
+    @JsonProperty("amagar_dates")
     private String amagarDates;
 
-    @Column(name = "id_creador", nullable = true)
     private Long idCreador;
 
     public Event() {}
@@ -179,6 +178,21 @@ public class Event implements Serializable {
 
     public void setSubtitol(String subtitol) {
         this.subtitol = subtitol;
+    }
+
+    @JsonSetter("tags_mbits")
+    public void setTagsAmbitsJson(String tagsAmbitsJson) {
+        tagsAmbits = convertTagsToList(tagsAmbitsJson, "agenda:ambits/");
+    }
+
+    @JsonSetter("tags_categor_es")
+    public void setTagsCategoriesJson(String tagsCategoriesJson) {
+        tagsCategories = convertTagsToList(tagsCategoriesJson, "agenda:categories/");
+    }
+
+    @JsonSetter("tags_altres_categor_es")
+    public void setTagsAltresCategoriesJson(String tagsAltresCategoriesJson) {
+        tagsAltresCategories = convertTagsToList(tagsAltresCategoriesJson, "agenda:altres-categories/");
     }
 
     public List<String> getTagsAmbits() {
@@ -277,12 +291,28 @@ public class Event implements Serializable {
         this.espai = espai;
     }
 
+    public Float getLatitud() {
+        return latitud;
+    }
+
+    public void setLatitud(Float latitud) {
+        this.latitud = latitud;
+    }
+
     public String getLocalitat() {
         return localitat;
     }
 
     public void setLocalitat(String localitat) {
         this.localitat = localitat;
+    }
+
+    public Float getLongitud() {
+        return longitud;
+    }
+
+    public void setLongitud(Float longitud) {
+        this.longitud = longitud;
     }
 
     public String getRegioOPais() {
@@ -363,5 +393,33 @@ public class Event implements Serializable {
 
     public Long getIdCreador() {
         return idCreador;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Event event = (Event) o;
+        return Objects.equals(id, event.id);  // Only consider `id` for equality
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);  // Hash based only on `id`
+    }
+
+    @PrePersist
+    public void generateId() {
+        if (id == null) id = new Random().nextLong(2_000_000_000);
+    }
+
+    public static List<String> convertTagsToList(String tags, String commonPart) {
+        if (tags == null || tags.isEmpty()) {
+            return List.of();
+        }
+
+        return Arrays.stream(tags.split(","))
+                .map(tag -> tag.replace(commonPart, ""))
+                .collect(Collectors.toList());
     }
 }

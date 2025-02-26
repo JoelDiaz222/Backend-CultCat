@@ -33,4 +33,9 @@ public class EventController {
             throw new IllegalArgumentException("La data d'inici ha de ser posterior a la de fi.");
         return eventService.getEventsWithinRadiusAndDate(latitude, longitude, radius, from, to);
     }
+
+    @GetMapping("/update")
+    public String insertNewEventsFromDataset() {
+        return "New events inserted: " + eventService.fetchAndStoreNewEvents();
+    }
 }

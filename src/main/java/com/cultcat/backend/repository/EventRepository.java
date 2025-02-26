@@ -27,4 +27,7 @@ public interface EventRepository extends JpaRepository<Event, Long> {
             @Param("to") LocalDate to);
 
     List<Event> findByIdCreador(Long idCreador);
+
+    @Query("SELECT MAX(e.id) FROM Event e")
+    Optional<Long> findMaxId();
 }
