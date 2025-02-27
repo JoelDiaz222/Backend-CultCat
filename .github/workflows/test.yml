@@ -3,12 +3,12 @@ name: Run Tests on Commit
 on:
   push:
     branches:
-      - main
-      - develop
+      - master
+      - dev
   pull_request:
     branches:
-      - main
-      - develop
+      - master
+      - dev
 
 jobs:
   test:
