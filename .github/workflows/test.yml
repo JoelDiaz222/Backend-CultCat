@@ -27,9 +27,9 @@ jobs:
 
       - name: Setup Environment Variables
         run: |
-          echo "SPRING_DATASOURCE_URL=${{ secrets.DB_URL }}" >> $GITHUB_ENV
-          echo "CLIENT_ID=${{ secrets.CLIENT_ID }}" >> $GITHUB_ENV
-          echo "CLIENT_SECRET=${{ secrets.CLIENT_SECRET }}" >> $GITHUB_ENV
+          echo "SPRING_DATASOURCE_URL=${{ secrets.DB_URL }}" > .env
+          echo "CLIENT_ID=${{ secrets.CLIENT_ID }}" >> .env
+          echo "CLIENT_SECRET=${{ secrets.CLIENT_SECRET }}" >> .env
 
       - name: Grant Execute Permissions for Gradle
         run: chmod +x gradlew
