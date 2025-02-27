@@ -21,7 +21,7 @@ public class EventRepositoryTest {
 
     @BeforeAll
     static void setUp() {
-        System.setProperty("DB_URL", Dotenv.load().get("DB_URL"));
+        System.setProperty("DB_URL", System.getenv("DB_URL"));
     }
 
     @Test
