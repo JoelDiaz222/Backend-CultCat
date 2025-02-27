@@ -8,4 +8,6 @@ public interface UsuariRepository extends JpaRepository<Usuari, String> {
     Optional<Usuari> findByGoogleId(String googleId);
 
     Optional<Usuari> findByEmail(String email);
+
+    Optional<Usuari> findByNomUsuari(String nomUsuari);
 }
