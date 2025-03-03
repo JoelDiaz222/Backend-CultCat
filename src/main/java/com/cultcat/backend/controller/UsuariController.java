@@ -2,7 +2,6 @@ package com.cultcat.backend.controller;
 
 import com.cultcat.backend.model.Usuari;
 import com.cultcat.backend.service.UsuariService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,11 +11,14 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 import java.util.Optional;
 
-@RequestMapping("/users")
 @RestController
+@RequestMapping("/api/users")
 public class UsuariController {
-    @Autowired
-    private UsuariService userService;
+    private final UsuariService usuariService;
+
+    private UsuariController(UsuariService usuariService) {
+        this.usuariService = usuariService;
+    }
 
     @GetMapping("/me")
     public Map<String, Object> getUser(@AuthenticationPrincipal OAuth2User user) {
@@ -25,6 +27,6 @@ public class UsuariController {
 
     @GetMapping("/myEntity")
     public Optional<Usuari> getUserEntity(@AuthenticationPrincipal OAuth2User user) {
-        return userService.findByGoogleId(user.getAttribute("sub"));
+        return usuariService.findByGoogleId(user.getAttribute("sub"));
     }
 }

@@ -29,18 +29,20 @@ public class EventService {
         return eventRepository.findById(id);
     }
 
-    public List<EventDTO> getEventsWithinRadiusAndDate(
-            double latitude,
-            double longitude,
-            double radius,
-            LocalDate from,
-            LocalDate to) {
-        return eventRepository.findByLocationWithinRadiusAndDate(
-                latitude,
-                longitude,
-                radius,
-                from,
-                to);
+    public List<EventDTO> getEventsWithinRadiusAndDate(double latitude, double longitude, double radius, LocalDate from, LocalDate to) {
+        return eventRepository.findByLocationWithinRadiusAndDate(latitude, longitude, radius, from, to);
+    }
+
+    public Event createEvent(Event event) {
+        return eventRepository.save(event);
+    }
+
+    public Event updateEvent(Event event) {
+        return eventRepository.save(event);
+    }
+
+    public void deleteEvent(long id) {
+        eventRepository.deleteById(id);
     }
 
     @Scheduled(cron = "0 0 */12 * * *")

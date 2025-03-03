@@ -13,7 +13,7 @@ import java.util.Date;
 public class JwtTokenUtil {
 
     private static final String SECRET_KEY = Dotenv.load().get("JWT_SECRET_KEY");
-    private static final long EXPIRATION_TIME = 1000 * 60 * 60 * 24; // 1 hour
+    private static final long EXPIRATION_TIME = 1000 * 60 * 60 * 24;
 
     public static String generateToken(String googleId, String email) {
         final Date now = new Date();

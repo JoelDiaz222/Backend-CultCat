@@ -4,7 +4,7 @@ import com.cultcat.backend.model.Usuari;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
-public interface UsuariRepository extends JpaRepository<Usuari, String> {
+public interface UsuariRepository extends JpaRepository<Usuari, Long> {
     Optional<Usuari> findByGoogleId(String googleId);
 
     Optional<Usuari> findByEmail(String email);

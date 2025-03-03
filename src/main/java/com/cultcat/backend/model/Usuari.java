@@ -6,7 +6,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -35,7 +34,7 @@ public class Usuari implements UserDetails {
     private int punts;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "rols_usuari", joinColumns = @JoinColumn(name = "id"))
+    @CollectionTable(name = "rol_usuari", joinColumns = @JoinColumn(name = "id"))
     @Column(name = "rol")
     private Set<String> rols;
 
