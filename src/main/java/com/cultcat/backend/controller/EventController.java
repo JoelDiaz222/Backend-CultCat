@@ -79,17 +79,21 @@ public class EventController {
 
         final Event event = eventOptional.get();
 
-        if (!event.getIdCreador().equals(usuari.getId()))
+        if (event.getIdCreador() == null || !event.getIdCreador().equals(usuari.getId())) {
             return ResponseEntity.status(403).body("No estàs autoritzat per eliminar aquest event.");
+        }
 
         eventRepository.delete(event);
         return ResponseEntity.ok("Event eliminat exitosament.");
     }
 
-    public boolean isEventOwner(Usuari usuari, Long eventId) {
-        final Optional<Event> optionalEvent = eventRepository.findById(eventId);
-        if (optionalEvent.isEmpty()) return false;
-        final Event event = optionalEvent.get();
-        return event.getIdCreador() != null && event.getIdCreador().equals(usuari.getId());
+    @GetMapping("/update")
+    public String insertNewEventsFromDataset() {
+        return "New events inserted: " + eventService.fetchAndStoreNewEvents();
+    }
+
+    public boolean isEventOwner(final Usuari usuari, final Long eventId) {
+        final Optional<Event> event = eventRepository.findById(eventId);
+        return event.isPresent() && event.get().getIdCreador().equals(usuari.getId());
     }
 }
