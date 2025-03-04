@@ -2,6 +2,9 @@ package com.cultcat.backend.model;
 
 import com.cultcat.backend.model.id.IdValoracioUsuari;
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "valoracio_usuari")
@@ -24,6 +27,10 @@ public class ValoracioUsuari {
 
     @Column(nullable = false, length = 500)
     private String missatge;
+
+    @CreationTimestamp
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime data;
 
     public ValoracioUsuari() {}
 
@@ -73,5 +80,9 @@ public class ValoracioUsuari {
 
     public void setMissatge(String missatge) {
         this.missatge = missatge;
+    }
+
+    public LocalDateTime getData() {
+        return data;
     }
 }

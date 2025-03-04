@@ -15,7 +15,8 @@ public interface ValoracioUsuariRepository extends JpaRepository<ValoracioUsuari
         SELECT v.usuariEmissor.nomUsuari AS nomUsuariEmissor,
                v.usuariReceptor.nomUsuari AS nomUsuariReceptor,
                v.puntuacio AS puntuacio,
-               v.missatge AS missatge
+               v.missatge AS missatge,
+               v.data AS data
         FROM ValoracioUsuari v
         WHERE v.usuariReceptor.id = :idUsuariReceptor
     """)
@@ -25,7 +26,8 @@ public interface ValoracioUsuariRepository extends JpaRepository<ValoracioUsuari
         SELECT v.usuariEmissor.nomUsuari AS nomUsuariEmissor,
                v.usuariReceptor.nomUsuari AS nomUsuariReceptor,
                v.puntuacio AS puntuacio,
-               v.missatge AS missatge
+               v.missatge AS missatge,
+               v.data AS data
         FROM ValoracioUsuari v
         WHERE v.usuariEmissor.id = :idUsuariEmissor
     """)

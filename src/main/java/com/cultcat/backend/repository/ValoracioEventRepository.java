@@ -9,17 +9,23 @@ import java.util.List;
 
 public interface ValoracioEventRepository extends JpaRepository<ValoracioEvent, IdValoracioEvent> {
 
-    @Query("SELECT v.usuari.nomUsuari AS nomUsuari, " +
-            "v.event.denominacio AS nomEvent, " +
-            "v.puntuacio AS puntuacio, " +
-            "v.missatge AS missatge " +
-            "FROM ValoracioEvent v WHERE v.event.id = :eventId")
+    @Query("""
+        SELECT v.usuari.nomUsuari AS nomUsuari,
+            v.event.denominacio AS nomEvent,
+            v.puntuacio AS puntuacio,
+            v.missatge AS missatge,
+            v.data AS data
+            FROM ValoracioEvent v WHERE v.event.id = :eventId
+    """)
     List<ValoracioEventDTO> findByEvent(Long eventId);
 
-    @Query("SELECT v.usuari.nomUsuari AS nomUsuari, " +
-            "v.event.denominacio AS nomEvent, " +
-            "v.puntuacio AS puntuacio, " +
-            "v.missatge AS missatge " +
-            "FROM ValoracioEvent v WHERE v.usuari.id = :userId")
+    @Query("""
+        SELECT v.usuari.nomUsuari AS nomUsuari,
+                    v.event.denominacio AS nomEvent,
+                    v.puntuacio AS puntuacio,
+                    v.missatge AS missatge,
+                    v.data AS data
+                    FROM ValoracioEvent v WHERE v.usuari.id = :userId
+        """)
     List<ValoracioEventDTO> findByUsuari(Long userId);
 }
