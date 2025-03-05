@@ -39,7 +39,6 @@ public class EventController {
             @RequestParam double radius,
             @RequestParam(required = false) LocalDate from,
             @RequestParam(required = false) LocalDate to) {
-
         return eventRepository.findByLocationWithinRadiusAndDate(latitude, longitude, radius, from, to);
     }
 
@@ -47,7 +46,6 @@ public class EventController {
     public ResponseEntity<String> createEvent(
             @AuthenticationPrincipal final Usuari usuari,
             @RequestBody final Event event) {
-
         event.setIdCreador(usuari.getId());
         eventRepository.save(event);
 
@@ -55,7 +53,7 @@ public class EventController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN') or @eventController.isEventOwner(principal, #id)")
+    @PreAuthorize("hasRole('ADMIN') or @eventController.isEventCreator(principal, #id)")
     public ResponseEntity<Event> updateEvent(@PathVariable long id, @RequestBody Event event) {
         final Optional<Event> existingEvent = eventService.getEventById(id);
 
@@ -68,31 +66,28 @@ public class EventController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN') or @eventController.isEventOwner(principal, #id)")
+    @PreAuthorize("hasRole('ADMIN') or @eventController.isEventCreator(principal, #id)")
     public ResponseEntity<String> deleteEvent(
             @AuthenticationPrincipal Usuari usuari,
             @PathVariable("id") Long id) {
-
-        final Optional<Event> eventOptional = eventRepository.findById(id);
-
-        if (eventOptional.isEmpty()) return ResponseEntity.notFound().build();
-
-        final Event event = eventOptional.get();
-
-        if (event.getIdCreador() == null || !event.getIdCreador().equals(usuari.getId())) {
-            return ResponseEntity.status(403).body("No estàs autoritzat per eliminar aquest event.");
-        }
-
-        eventRepository.delete(event);
-        return ResponseEntity.ok("Event eliminat exitosament.");
+        return eventService.deleteEvent(usuari, id);
     }
 
     @GetMapping("/update")
-    public String insertNewEventsFromDataset() {
-        return "New events inserted: " + eventService.fetchAndStoreNewEvents();
+    public ResponseEntity<String> insertNewEventsFromDataset() {
+        return ResponseEntity.ok("Nous events insertats: " + eventService.fetchAndStoreNewEvents());
     }
 
-    public boolean isEventOwner(final Usuari usuari, final Long eventId) {
+    @GetMapping("/searchByName")
+    public List<Event> searchByName(
+            @RequestParam("name") String name,
+            @RequestParam(value = "tagsAmbits", required = false) List<String> tagsAmbits,
+            @RequestParam(value = "tagsCategories", required = false) List<String> tagsCategories,
+            @RequestParam(value = "tagsAltresCategories", required = false) List<String> tagsAltresCategories) {
+        return eventService.findByFilters(name, tagsAmbits, tagsCategories, tagsAltresCategories);
+    }
+
+    public boolean isEventCreator(final Usuari usuari, final Long eventId) {
         final Optional<Event> event = eventRepository.findById(eventId);
         return event.isPresent() && event.get().getIdCreador().equals(usuari.getId());
     }

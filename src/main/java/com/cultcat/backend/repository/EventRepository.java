@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface EventRepository extends JpaRepository<Event, Long> {
-
     @Query(value = """
         SELECT e.id, e.denominacio, e.descripcio, e.adreça, e.data_inici, e.data_fi
         FROM event e
@@ -30,4 +29,16 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 
     @Query("SELECT MAX(e.id) FROM Event e")
     Optional<Long> findMaxId();
+
+    @Query(value = "SELECT * FROM event " +
+            "WHERE denominacio ILIKE %:denominacio% " +
+            "AND tags_ambits @> CAST(:tagsAmbits AS text[]) " +
+            "AND tags_categories @> CAST(:tagsCategories AS text[]) " +
+            "AND tags_altres_categories @> CAST(:tagsAltresCategories AS text[])",
+            nativeQuery = true)
+    List<Event> findByFilters(
+            @Param("denominacio") String denominacio,
+            @Param("tagsAmbits") String tagsAmbits,
+            @Param("tagsCategories") String tagsCategories,
+            @Param("tagsAltresCategories") String tagsAltresCategories);
 }
